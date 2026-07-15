@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Birthday Surprise for Tom & Jerry 🌟</title>
+    <style>
+        /* বেসিক স্টাইল */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0d0d0d;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* প্রথম স্ক্রিন বাতন */
+        #overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(13, 13, 13, 0.98);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 1s ease;
+        }
+        .btn-start {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 75, 43, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 75, 43, 0.6);
+        }
+
+        /* মেইন কন্টেন্ট */
+        .container {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s ease 0.5s;
+            z-index: 10;
+            max-width: 90%;
+        }
+        .container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* জন্মদিনের টাইটেল */
+        h1 {
+            font-size: 2.5rem;
+            color: #ff4b2b;
+            text-shadow: 0 0 10px rgba(255, 75, 43, 0.5);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 75, 43, 0.5); }
+            100% { transform: scale(1.05); text-shadow: 0 0 20px rgba(255, 75, 43, 0.8); }
+        }
+
+        /* ছবির ফ্রেম */
+        .photo-frame {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 20px auto;
+            border: 6px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            overflow: hidden;
+            background-color: #1a1a1a;
+        }
+        .photo-frame img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: contain; /* Adjusted to fit the full character vectors beautifully */
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        .photo-frame img.active {
+            opacity: 1;
+        }
+
+        /* টাইপিং টেক্সট বক্স */
+        .wish {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ddd;
+            margin-top: 20px;
+            min-height: 60px;
+            padding: 0 10px;
+        }
+
+        /* বেলুন ওড়ানো */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+            opacity: 0.75;
+            animation: floatUp 8s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { bottom: -100px; transform: translateX(0); }
+            50% { transform: translateX(30px); }
+            100% { bottom: 105vh; transform: translateX(-30px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ব্যাকগ্রাউন্ড মিউজিক (Ensure you have your audio named 'bgmusic.mp3' in the same folder) -->
+    <audio id="bg-music" src="bgmusic.mp3" loop></audio>
+
+    <!-- প্রথম স্ক্রিন ওভারলে -->
+    <div id="overlay">
+        <h2 style="margin-bottom: 25px; font-weight: 300; text-align:center; padding: 0 15px;">Tom & Jerry's Birthday Surprise is Ready! 🎁</h2>
+        <button class="btn-start" onclick="startSurprise()">Open Surprise ✨</button>
+    </div>
+
+    <!-- মূল সারপ্রাইজ পেজ -->
+    <div class="container" id="main-content">
+        <h1>Happy Birthday, Tom & Jerry! 🎂🎉</h1>
+        
+        <!-- Updated image names according to the WhatsApp attachments provided -->
+        <div class="photo-frame">
+            <img src="IMG-20260715-WA0002.jpg" class="active" alt="Jerry Mouse">
+            <img src="IMG-20260715-WA0001.jpg" alt="Tom Cat">
+        </div>
+
+        <!-- জন্মদিনের শুভেচ্ছা বার্তা -->
+        <p class="wish" id="typing-text"></p>
+    </div>
+
+    <script>
+        function startSurprise() {
+            // ১. গান বাজানো শুরু
+            const music = document.getElementById('bg-music');
+            music.play().catch(e => console.log("Audio playback error:", e));
+
+            // ২. প্রথম স্ক্রিন সরানো
+            const overlay = document.getElementById('overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 1000);
+
+            // ৩. মূল কন্টেন্ট দেখানো
+            const content = document.getElementById('main-content');
+            content.classList.add('show');
+
+            // ৪. স্লাইড শো চালু
+            startSlideshow();
+
+            // ৫. টাইপিং ইফেক্ট চালু
+            startTyping();
+
+            // ৬. বেলুন ওড়ানো চালু
+            setInterval(createBalloon, 800);
+        }
+
+        // ছবি বদলানোর লজিক
+        function startSlideshow() {
+            const images = document.querySelectorAll('.photo-frame img');
+            let currentIndex = 0;
+            setInterval(() => {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('active');
+            }, 4000);
+        }
+
+        // কাস্টম শুভেচ্ছা বার্তা
+        const message = "আজকের এই বিশেষ দিনে তোমাদের দুজনকে জানাই অনেক অনেক শুভেচ্ছা ও ভালোবাসা! টম আর জেরির মতোই সারাজীবন মিষ্টি মিষ্টি ঝগড়া আর দুষ্টু-মিষ্টি ভালোবাসায় মেতে থেকো। তোমাদের জীবনের সব স্বপ্ন সত্যি হোক! 🐱🐭🎂🌟";
+        let charIndex = 0;
+        function startTyping() {
+            const textContainer = document.getElementById('typing-text');
+            if (charIndex < message.length) {
+                textContainer.innerHTML += message.charAt(charIndex);
+                charIndex++;
+                setTimeout(startTyping, 80);
+            }
+        }
+
+        // বেলুন ওড়ানো
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            
+            const colors = ['#ff4b2b', '#ff416c', '#ff85a1', '#f9dbbd', '#ffb5a7', '#ffccd5'];
+            balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            balloon.style.left = Math.random() * 100 + 'vw';
+            const size = Math.random() * 20 + 30;
+            balloon.style.width = size + 'px';
+            balloon.style.height = (size * 1.25) + 'px';
+            
+            balloon.style.animationDuration = (Math.random() * 4 + 6) + 's'; 
+            
+            document.body.appendChild(balloon);
+            
+            setTimeout(() => { balloon.remove(); }, 10000);
+        }
+    </script>
+</body>
+</html>
